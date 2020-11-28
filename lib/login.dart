@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'package:Shrine/src/product_sample.dart';
-import 'package:Shrine/src/screens/product_home.dart';
+import 'package:Shrine/src/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
