@@ -41,12 +41,4 @@ class PostFireStore {
     return _db.collection('posts').doc(postId).delete();
   }
 
-  Future<void> removeUser(String userMemoId, String _postId) {
-    return _db
-        .collection('posts')
-        .document(_postId)
-        .collection('user')
-        .doc(userMemoId)
-        .delete();
-  }
 }

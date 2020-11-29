@@ -1,5 +1,5 @@
-import 'package:Shrine/src/models/product.dart';
-import 'package:Shrine/src/providers/product_provider.dart';
+import 'package:Shrine/src/models/posts.dart';
+import 'package:Shrine/src/providers/post_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,9 +12,9 @@ import 'dart:io';
 import 'add_screen.dart';
 
 class DetailScreen extends StatefulWidget {
-  final Product product;
+  final Post post;
 
-  DetailScreen({this.product});
+  DetailScreen({this.post});
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
@@ -23,43 +23,35 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-//  CollectionReference users = FirebaseFirestore.instance.collection('product').;
-  final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
-  final priceController = TextEditingController();
+//  CollectionReference users = FirebaseFirestore.instance.collection('post').;
+  final titleController = TextEditingController();
+  final contentController = TextEditingController();
   File _image;
   final picker = ImagePicker();
   bool flag = false;
 
-  void nameDispose() {
-    nameController.dispose();
+  void titleDispose() {
+    titleController.dispose();
     super.dispose();
   }
 
   void disposeDescription() {
-    descriptionController.dispose();
-    super.dispose();
-  }
-
-  void priceDescription() {
-    descriptionController.dispose();
+    contentController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    final productProvider =
-        Provider.of<ProductProvider>(context, listen: false);
-    if (widget.product != null) {
+    final postProvider = Provider.of<PostProvider>(context, listen: false);
+    if (widget.post != null) {
       //Edit
-      nameController.text = widget.product.name;
-      descriptionController.text = widget.product.description;
-      priceController.text = widget.product.price.toString();
+      titleController.text = widget.post.title;
+      contentController.text = widget.post.content;
 
-      productProvider.loadAll(widget.product);
+      postProvider.loadAll(widget.post);
     } else {
       //Add
-      productProvider.loadAll(null);
+      postProvider.loadAll(null);
     }
     super.initState();
   }
@@ -88,7 +80,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
-    final productProvider = Provider.of<ProductProvider>(context);
+    final postProvider = Provider.of<PostProvider>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -106,10 +98,10 @@ class _DetailScreenState extends State<DetailScreen> {
                 color: Colors.white,
               ),
               onPressed: () {
-                if (productProvider.userUid == auth.currentUser.uid) {
+                if (postProvider.userUid == auth.currentUser.uid) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => AddScreen(product: widget.product),
+                      builder: (context) => AddScreen(post: widget.post),
                     ),
                   );
                 } else {
@@ -123,11 +115,10 @@ class _DetailScreenState extends State<DetailScreen> {
                 color: Colors.white,
               ),
               onPressed: () {
-                if (productProvider.userUid == auth.currentUser.uid) {
-                  productProvider.removeProduct(widget.product.productId);
+                if (postProvider.userUid == auth.currentUser.uid) {
+                  postProvider.removePost(widget.post.postId);
                   Navigator.of(context).pop();
-                }
-                else {
+                } else {
                   _showDialog("삭제 할 권한이 없습니다.");
                 }
               },
@@ -141,12 +132,12 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  productProvider.imageUrl == null
+                  postProvider.imageUrl == null
                       ? Padding(
                           padding: const EdgeInsets.all(80.0),
                           child: Image.asset("assets/logo.png"),
                         )
-                      : Image.network(productProvider.imageUrl),
+                      : Image.network(postProvider.imageUrl),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 40.0, vertical: 50),
@@ -162,7 +153,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    productProvider.name,
+                                    postProvider.title,
                                     style: TextStyle(
                                       color: Colors.blue,
                                       fontWeight: FontWeight.bold,
@@ -181,64 +172,61 @@ class _DetailScreenState extends State<DetailScreen> {
                                           fontSize: 20,
                                         ),
                                       ),
-                                      Text(
-                                        productProvider.price.toString(),
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 20,
-                                        ),
-                                      ),
+                                      // Text(
+                                      //   postProvider.price.toString(),
+                                      //   style: TextStyle(
+                                      //     color: Colors.blue,
+                                      //     fontSize: 20,
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ],
                               ),
                             ),
-                            FlatButton(
-                              onPressed: () {
-                                if (productProvider.id ==
-                                    auth.currentUser.uid) {
-                                  final snackBar = SnackBar(
-                                    content: Text('You can only do it once !!'),
-                                  );
-                                  Scaffold.of(context).showSnackBar(snackBar);
-                                } else {
-                                  final snackBar = SnackBar(
-                                    content: Text('I LIKE IT !'),
-                                  );
-                                  setState(() {
-                                    flag = true;
-                                  });
-                                  Scaffold.of(context).showSnackBar(snackBar);
-                                  productProvider.changeUId =
-                                      auth.currentUser.uid;
-                                  productProvider.likeUp();
-                                  productProvider.changeId =
-                                      auth.currentUser.uid;
-//                                  productProvider
-//                                      .addLikeUser(auth.currentUser.uid);
-                                  productProvider.saveProduct();
-//                                  productProvider.saveUsers();
-//                                  print(productProvider.checkLikeUsers(auth.currentUser.uid));
-                                }
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.thumb_up_sharp,
-                                    color: Colors.red,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    productProvider.like.toString(),
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
+//                             FlatButton(
+//                               onPressed: () {
+//                                 if (postProvider.id == auth.currentUser.uid) {
+//                                   final snackBar = SnackBar(
+//                                     content: Text('You can only do it once !!'),
+//                                   );
+//                                   Scaffold.of(context).showSnackBar(snackBar);
+//                                 } else {
+//                                   final snackBar = SnackBar(
+//                                     content: Text('I LIKE IT !'),
+//                                   );
+//                                   setState(() {
+//                                     flag = true;
+//                                   });
+//                                   Scaffold.of(context).showSnackBar(snackBar);
+//                                   postProvider.changeUId = auth.currentUser.uid;
+//                                   postProvider.likeUp();
+//                                   postProvider.changeId = auth.currentUser.uid;
+// //                                  postProvider
+// //                                      .addLikeUser(auth.currentUser.uid);
+//                                   postProvider.savePost();
+// //                                  postProvider.saveUsers();
+// //                                  print(postProvider.checkLikeUsers(auth.currentUser.uid));
+//                                 }
+//                               },
+//                               child: Row(
+//                                 children: [
+//                                   Icon(
+//                                     Icons.thumb_up_sharp,
+//                                     color: Colors.red,
+//                                   ),
+//                                   SizedBox(
+//                                     width: 10,
+//                                   ),
+//                                   Text(
+//                                     postProvider.like.toString(),
+//                                     style: TextStyle(
+//                                       color: Colors.red,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             )
                           ],
                         ),
                         SizedBox(
@@ -251,7 +239,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           height: 20,
                         ),
                         Text(
-                          productProvider.description,
+                          postProvider.content,
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 16,
@@ -261,14 +249,14 @@ class _DetailScreenState extends State<DetailScreen> {
                           height: 150,
                         ),
                         Text(
-                          'creater : ${productProvider.userUid}',
+                          'creater : ${postProvider.userUid}',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 15,
                           ),
                         ),
                         Text(
-                          formatDate(DateTime.parse(widget.product.date), [
+                          formatDate(DateTime.parse(widget.post.date), [
                             yyyy,
                             '.',
                             mm,
@@ -288,8 +276,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                         ),
                         Text(
-                          formatDate(
-                              DateTime.parse(widget.product.modifyDate), [
+                          formatDate(DateTime.parse(widget.post.modifyDate), [
                             yyyy,
                             '.',
                             mm,
@@ -309,7 +296,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                         ),
 //                    Text(
-//                      '${widget.product.date} created',
+//                      '${widget.post.date} created',
 //                      style: TextStyle(color: Colors.grey),
 //                    ),
                       ],
@@ -323,10 +310,10 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Future<DateTime> _pickDate(
-      BuildContext context, ProductProvider productProvider) async {
+      BuildContext context, PostProvider postProvider) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: productProvider.date,
+        initialDate: postProvider.date,
         firstDate: DateTime(2019),
         lastDate: DateTime(2050));
 
