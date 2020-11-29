@@ -10,6 +10,7 @@ class PostProvider with ChangeNotifier {
   String _userName;
   DateTime _date;
   DateTime _modifyDate;
+  String _title;
   String _content;
   String _imageUrl;
   num _like = 0;
@@ -22,6 +23,8 @@ class PostProvider with ChangeNotifier {
   DateTime get date => _date;
 
   String get userName => _userName;
+
+  String get title => _title;
 
   String get content => _content;
 
@@ -53,6 +56,10 @@ class PostProvider with ChangeNotifier {
 
   set changeModifyDate(DateTime modifyDate) {
     _modifyDate = modifyDate;
+    notifyListeners();
+  }
+  set changeTitle(String title) {
+    _title = title;
     notifyListeners();
   }
 
@@ -91,6 +98,7 @@ class PostProvider with ChangeNotifier {
     if (post != null) {
       _date = DateTime.parse(post.date);
       _userName = post.userName;
+      _title = post.title;
       _content = post.content;
       _postId = post.postId;
       _imageUrl = post.imageUrl;
@@ -101,6 +109,7 @@ class PostProvider with ChangeNotifier {
     } else {
       _date = DateTime.now();
       _userName = null;
+      _title = null;
       _content = null;
       _postId = null;
       _imageUrl = null;
@@ -117,6 +126,7 @@ class PostProvider with ChangeNotifier {
       var newPost = Post(
         date: _date.toIso8601String(),
         userName: _userName,
+        title: _title,
         content: _content,
         postId: uuid.v1(),
         imageUrl: _imageUrl,
@@ -132,6 +142,7 @@ class PostProvider with ChangeNotifier {
       var updatedPost = Post(
         date: _date.toIso8601String(),
         userName: _userName,
+        title: _title,
         content: _content,
         postId: _postId,
         imageUrl: _imageUrl,

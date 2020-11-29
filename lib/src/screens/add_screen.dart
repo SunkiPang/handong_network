@@ -1,5 +1,5 @@
-import 'package:Shrine/src/models/product.dart';
-import 'package:Shrine/src/providers/product_provider.dart';
+import 'package:Shrine/src/models/posts.dart';
+import 'package:Shrine/src/providers/post_provider.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,64 +11,56 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class AddScreen extends StatefulWidget {
-  final Product product;
+  final Post post;
 
-  AddScreen({this.product});
+  AddScreen({this.post});
 
   @override
   _AddScreenState createState() => _AddScreenState();
 }
 
 class _AddScreenState extends State<AddScreen> {
-  final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
-  final priceController = TextEditingController();
+  final titleController = TextEditingController();
+  final contentController = TextEditingController();
   final imageController = TextEditingController();
 
   String imageUrl;
 
 //  final picker = ImagePicker();
 
-  void nameDispose() {
-    nameController.dispose();
+  void titleDispose() {
+    titleController.dispose();
     super.dispose();
   }
 
-  void disposeDescription() {
-    descriptionController.dispose();
-    super.dispose();
-  }
-
-  void priceDescription() {
-    descriptionController.dispose();
+  void disposeContent() {
+    contentController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    final productProvider =
-        Provider.of<ProductProvider>(context, listen: false);
-    if (widget.product != null) {
+    final postProvider = Provider.of<PostProvider>(context, listen: false);
+    if (widget.post != null) {
       //Edit
-      nameController.text = widget.product.name;
-      descriptionController.text = widget.product.description;
-      priceController.text = widget.product.price.toString();
-      imageController.text = widget.product.imageUrl;
-      productProvider.loadAll(widget.product);
+      titleController.text = widget.post.title;
+      contentController.text = widget.post.content;
+      imageController.text = widget.post.imageUrl;
+      postProvider.loadAll(widget.post);
     } else {
       //Add
-      productProvider.loadAll(null);
+      postProvider.loadAll(null);
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductProvider>(context);
+    final postProvider = Provider.of<PostProvider>(context);
     FirebaseAuth auth = FirebaseAuth.instance;
     return Scaffold(
       appBar: AppBar(
-        title: (widget.product != null)
+        title: (widget.post != null)
             ? Text(
                 "Edit",
                 style: TextStyle(color: Colors.white),
@@ -81,8 +73,8 @@ class _AddScreenState extends State<AddScreen> {
           FlatButton(
             child: Text('Save', style: TextStyle(color: Colors.white)),
             onPressed: () {
-              productProvider.changeUserUid = auth.currentUser.uid;
-              productProvider.saveProduct();
+              postProvider.changeUserUid = auth.currentUser.uid;
+              postProvider.savePost();
               Navigator.of(context).pop();
             },
           ),
@@ -97,17 +89,17 @@ class _AddScreenState extends State<AddScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              productProvider.imageUrl == null
+              postProvider.imageUrl == null
                   ? Padding(
                       padding: const EdgeInsets.all(80.0),
                       child: Image.asset("assets/logo.png"),
                     )
-                  : Image.network(productProvider.imageUrl),
+                  : Image.network(postProvider.imageUrl),
               Container(
                 alignment: Alignment.centerRight,
                 child: IconButton(
                   icon: Icon(Icons.camera_alt),
-                  onPressed: () => uploadImage(productProvider),
+                  onPressed: () => uploadImage(postProvider),
                 ),
               ),
               Padding(
@@ -116,7 +108,7 @@ class _AddScreenState extends State<AddScreen> {
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        hintText: 'Product Name',
+                        hintText: 'Title',
 //                  border: InputBorder.none,
                       ),
                       style: TextStyle(
@@ -124,29 +116,19 @@ class _AddScreenState extends State<AddScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                       onChanged: (String value) =>
-                          productProvider.changeName = value,
-                      controller: nameController,
+                          postProvider.changeTitle = value,
+                      controller: titleController,
                     ),
                     TextField(
                       decoration: InputDecoration(
-                        hintText: 'Price',
-//                        border: InputBorder.none,
-                      ),
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) =>
-                          productProvider.changePrice = int.parse(value),
-                      controller: priceController,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Description',
+                        hintText: 'Content',
 //                        border: InputBorder.none,
                       ),
                       maxLines: 6,
                       minLines: 1,
                       onChanged: (String value) =>
-                          productProvider.changeDescription = value,
-                      controller: descriptionController,
+                          postProvider.changeContent = value,
+                      controller: contentController,
                     ),
                   ],
                 ),
@@ -158,7 +140,7 @@ class _AddScreenState extends State<AddScreen> {
     );
   }
 
-  uploadImage(productProvider) async {
+  uploadImage(postProvider) async {
     final _storage = FirebaseStorage.instance;
     final _picker = ImagePicker();
     PickedFile image;
@@ -175,15 +157,17 @@ class _AddScreenState extends State<AddScreen> {
 
       if (image != null) {
         //Upload to Firebase
-        var snapshot =
-            await _storage.ref().child('folderName/${file.absolute}').putFile(file);
+        var snapshot = await _storage
+            .ref()
+            .child('folderName/${file.absolute}')
+            .putFile(file);
 
         var downloadUrl = await snapshot.ref.getDownloadURL();
 
         setState(() {
           imageUrl = downloadUrl;
         });
-        productProvider.changeImageUrl = downloadUrl;
+        postProvider.changeImageUrl = downloadUrl;
       } else {
         print('No Path Received');
       }

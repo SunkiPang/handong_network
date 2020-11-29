@@ -10,9 +10,20 @@ class NavDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text(
-              'Side menu',
-              style: TextStyle(color: Colors.white, fontSize: 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Category',
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+                Text(" - 이 곳에 메인 화면을 카테고리화",
+                    style: TextStyle(color: Colors.white, fontSize: 15)),
+                Text(" - 날짜순 (최신순, 오래된 순) ",
+                    style: TextStyle(color: Colors.white, fontSize: 15)),
+                Text(" - 카테고리 별 (지역, 분야, 전공) ",
+                    style: TextStyle(color: Colors.white, fontSize: 15)),
+              ],
             ),
             decoration: BoxDecoration(
               color: kPrimaryColor,

@@ -26,7 +26,7 @@ class TextFieldContainer extends StatelessWidget {
     );
 
     final kGradientBoxDecoration = BoxDecoration(
-      gradient: LinearGradient(colors: [kSecondaryLightColor, kPrimaryDarkColor]),
+      gradient: LinearGradient(colors: [kPrimaryColor, kPrimaryDarkColor]),
       borderRadius: BorderRadius.circular(32),
     );
 

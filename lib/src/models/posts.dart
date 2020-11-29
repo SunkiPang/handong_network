@@ -5,6 +5,7 @@ class Post {
   final String userName;
   final String date;
   final String modifyDate;
+  final String title;
   final String content;
   final String imageUrl;
   final num like;
@@ -16,6 +17,7 @@ class Post {
     this.userName,
     this.date,
     this.modifyDate,
+    this.title,
     this.content,
     this.imageUrl,
     this.like,
@@ -27,6 +29,7 @@ class Post {
     return Post(
       postId: json['postId'],
       userName: json['userName'],
+      title: json['title'],
       content: json['content'],
       date: json['date'],
       imageUrl: json['imageUrl'],
@@ -43,6 +46,7 @@ class Post {
       'userName': userName,
       'date': date,
       'modifyDate': modifyDate,
+      'title': title,
       'content': content, //description
       'imageUrl': imageUrl,
       'like': like,
