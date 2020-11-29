@@ -2,7 +2,6 @@ import 'package:Shrine/src/models/product.dart';
 import 'package:Shrine/src/services/product_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'dart:io';
 import 'dart:core';
 
 class ProductProvider with ChangeNotifier {
@@ -53,7 +52,7 @@ class ProductProvider with ChangeNotifier {
 
 
 
-  //Stream<List<Product>> get products => productFireStore.getProducts();
+  Stream<List<Product>> get products => productFireStore.getProducts();
   Stream<List<Product>> get productsASC => productFireStore.getProductsASC();
 
   Stream<List<Product>> get productsDESC => productFireStore.getProductsDESC();

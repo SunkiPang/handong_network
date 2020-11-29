@@ -1,3 +1,5 @@
+import 'package:Shrine/colors.dart';
+import 'package:Shrine/src/screens/people/main/people_main_screen.dart';
 import 'package:Shrine/src/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +17,7 @@ class BottomBar extends StatelessWidget {
       shape: CircularNotchedRectangle(),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
+        color: kPrimaryColor,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -24,7 +27,7 @@ class BottomBar extends StatelessWidget {
                 Icons.home,
                 size: 30.0,
               ),
-              color: Colors.grey,
+              color: Colors.white,
               onPressed: () {},
             ),
             Padding(
@@ -34,7 +37,7 @@ class BottomBar extends StatelessWidget {
                   Icons.message,
                   size: 30.0,
                 ),
-                color: Colors.grey,
+                color: Colors.white,
                 onPressed: () {
                   // Navigator.push(
                   //   context,
@@ -51,16 +54,16 @@ class BottomBar extends StatelessWidget {
                 Icons.people,
                 size: 30.0,
               ),
-              color: Colors.grey,
+              color: Colors.white,
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) {
-                //       return MyProfileScreen();
-                //     },
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return PeopleMainScreen();
+                    },
+                  ),
+                );
               },
             ),
             IconButton(
@@ -68,7 +71,7 @@ class BottomBar extends StatelessWidget {
                 Icons.person,
                 size: 30.0,
               ),
-              color: Colors.grey,
+              color: Colors.white,
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
