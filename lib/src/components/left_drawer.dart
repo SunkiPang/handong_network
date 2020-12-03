@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../colors.dart';
+import 'left_bar_radio.dart';
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -38,11 +39,7 @@ class NavDrawer extends StatelessWidget {
             title: Text('도움'),
             onTap: () => {},
           ),
-          ListTile(
-            leading: Icon(Icons.help),
-            title: Text('기도 요청'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
+          RadioWidget(),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('구인구직'),

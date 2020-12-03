@@ -24,47 +24,60 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final postProvider = Provider.of<PostProvider>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Main'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              semanticLabel: 'search',
-            ),
-            onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
-            },
-          ),
-        ],
-      ),
-      drawer: NavDrawer(),
-      bottomNavigationBar: BottomBar(),
-      floatingActionButton: BottomHomeButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<List<Post>>(
-              stream: postProvider.posts,
-              // (dropdownValue == 'ASC')
-              // ? postProvider.postsASC
-              // : postProvider.postsDESC,
-              builder: (context, snapshot) {
-                // return GridView.count(
-                //   crossAxisCount: 1,
-                //   padding: EdgeInsets.all(10.0),
-                //   childAspectRatio: 8.0 / 6.0,
-                //   children: _buildGridCards(context, snapshot),
-                // ); //ListViewStore(context: context, snapshot: snapshot,);
-                return ListView(
-                  children: _buildGridCards(context, snapshot),
-                );
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Main'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.search,
+                semanticLabel: 'search',
+              ),
+              onPressed: () {
+                showSearch(context: context, delegate: DataSearch());
               },
             ),
+          ],
+          bottom: TabBar(
+            tabs: [
+              Text("도움요청"),
+              Text("기도요청"),
+              Text("구인구직"),
+            ],
           ),
-        ],
+        ),
+        // drawer: NavDrawer(),
+        bottomNavigationBar: BottomBar(),
+        floatingActionButton: BottomHomeButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: TabBarView(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  child: StreamBuilder<List<Post>>(
+                    stream: postProvider.posts,
+                    // (dropdownValue == 'ASC')
+                    // ? postProvider.postsASC
+                    // : postProvider.postsDESC,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData)
+                        return (CircularProgressIndicator());
+                      else
+                        return ListView(
+                          children: _buildGridCards(context, snapshot),
+                        );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Icon(Icons.directions_transit),
+            Icon(Icons.directions_bike),
+          ],
+        ),
       ),
     );
   }
@@ -92,6 +105,7 @@ class _HomeState extends State<Home> {
 
   List<Card> _buildGridCards(BuildContext context, snapshot) {
     final FirebaseAuth auth = FirebaseAuth.instance;
+    final postProvider = Provider.of<PostProvider>(context, listen: false);
     return snapshot.data.map<Card>((data) {
       var index = snapshot.data.indexOf(data);
       return Card(
@@ -109,20 +123,28 @@ class _HomeState extends State<Home> {
                 children: [
                   Row(
                     children: [
-                      Image.asset("assets/anonymous.png", width: 50),
+                      data.userImageUrl == null
+                          ? Image.asset("assets/anonymous.png", width: 50)
+                          : Image.network(data.userImageUrl, width: 50),
                       SizedBox(
                         width: 10,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          data.userName == null
+                              ? Text(
+                                  "User Name",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              : Text(
+                                  data.userName,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                           Text(
-                            "User Name",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            formatDate(
-                                DateTime.parse(data.date), [HH, ':', mm]),
+
+                            formatDate(DateTime.parse(data.date),
+                                [mm, '/', dd, '  ', HH, ':', mm]),
                             style: TextStyle(
                               color: Colors.grey,
                               // fontSize: 15,
@@ -132,6 +154,7 @@ class _HomeState extends State<Home> {
                       ),
                     ],
                   ),
+                  // (data.userUid == auth.currentUser.uid)
                   Row(
                     children: [
                       IconButton(
@@ -158,8 +181,8 @@ class _HomeState extends State<Home> {
                         ),
                         onPressed: () {
                           if (data.userUid == auth.currentUser.uid) {
-                            data.removeProduct(data.postId);
-                            Navigator.of(context).pop();
+                            postProvider.removePost(data.postId);
+                            // Navigator.of(context).pop();
                           } else {
                             _showDialog("삭제 할 권한이 없습니다.");
                           }
@@ -169,17 +192,6 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-              //   child: Text(
-              //     data.title,
-              //     style: TextStyle(
-              //       fontSize: 20,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
@@ -187,43 +199,7 @@ class _HomeState extends State<Home> {
               ),
               (data.imageUrl != null)
                   ? Image.network(data.imageUrl)
-                  : Image.asset("assets/logo.png"),
-//               Expanded(
-//                 child: Padding(
-//                   padding: EdgeInsets.fromLTRB(16.0, 2.0, 16.0, 0.0),
-//                   child: Padding(
-//                     padding: const EdgeInsets.symmetric(
-//                         vertical: 12.0, horizontal: 12.0),
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: <Widget>[
-//                         Text(
-// //                        "NAME",
-//                           data.name,
-//                           style: TextStyle(
-//                             fontSize: 14,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                           maxLines: 1,
-//                         ),
-//                         SizedBox(height: 4.0),
-//                         Row(
-//                           children: [
-//                             Text("\$ "),
-//                             Text(
-// //                        "price",
-//                               data.price.toString(),
-//                               style: TextStyle(
-//                                 fontSize: 11,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
+                  : SizedBox(),
             ],
           ),
         ),

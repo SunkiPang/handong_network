@@ -1,13 +1,18 @@
 import 'package:Shrine/src/models/posts.dart';
 import 'package:Shrine/src/services/post_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:core';
 
+enum Category { helps, prayers, jobs, }
+
 class PostProvider with ChangeNotifier {
   final postFireStore = PostFireStore();
+  String _category;
   String _postId;
   String _userName;
+  String _userImageUrl;
   DateTime _date;
   DateTime _modifyDate;
   String _title;
@@ -20,9 +25,13 @@ class PostProvider with ChangeNotifier {
   var uuid = Uuid();
 
   //Getters
+  String get category => _category;
+
   DateTime get date => _date;
 
   String get userName => _userName;
+
+  String get userImageUrl => _userImageUrl;
 
   String get title => _title;
 
@@ -44,8 +53,18 @@ class PostProvider with ChangeNotifier {
   // Stream<List<Post>> get postsDESC => postFireStore.getPostsDESC();
 
   //Setters
+  set changeCategory(String category) {
+    _category = category;
+    notifyListeners();
+  }
+
   set changeUserName(String userName) {
     _userName = userName;
+    notifyListeners();
+  }
+
+  set changeUserImgUrl(String userImageUrl) {
+    _userImageUrl = userImageUrl;
     notifyListeners();
   }
 
@@ -96,8 +115,10 @@ class PostProvider with ChangeNotifier {
   //Functions
   loadAll(Post post) {
     if (post != null) {
+      _category = post.category;
       _date = DateTime.parse(post.date);
       _userName = post.userName;
+      _userImageUrl = post.userImageUrl;
       _title = post.title;
       _content = post.content;
       _postId = post.postId;
@@ -107,8 +128,10 @@ class PostProvider with ChangeNotifier {
       _userUid = post.userUid;
       _modifyDate = DateTime.now();
     } else {
+      _category = "도움요청";
       _date = DateTime.now();
       _userName = null;
+      _userImageUrl = null;
       _title = null;
       _content = null;
       _postId = null;
@@ -124,8 +147,10 @@ class PostProvider with ChangeNotifier {
     if (_postId == null) {
       //Add
       var newPost = Post(
+        category: _category,
         date: _date.toIso8601String(),
         userName: _userName,
+        userImageUrl: _userImageUrl,
         title: _title,
         content: _content,
         postId: uuid.v1(),
@@ -135,13 +160,15 @@ class PostProvider with ChangeNotifier {
         likeCheck: false,
         modifyDate: _modifyDate.toIso8601String(),
       );
-      print(newPost.userName);
+      // print(newPost.userName);
       postFireStore.setPost(newPost);
     } else {
       //Edit
       var updatedPost = Post(
+        category: _category,
         date: _date.toIso8601String(),
         userName: _userName,
+        userImageUrl: _userImageUrl,
         title: _title,
         content: _content,
         postId: _postId,

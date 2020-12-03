@@ -69,16 +69,7 @@ class _AddScreenState extends State<AddScreen> {
                 "Add",
                 style: TextStyle(color: Colors.white),
               ),
-        actions: [
-          FlatButton(
-            child: Text('Save', style: TextStyle(color: Colors.white)),
-            onPressed: () {
-              postProvider.changeUserUid = auth.currentUser.uid;
-              postProvider.savePost();
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+        actions: [],
         leading: BackButton(
           color: Colors.white,
         ),
@@ -89,23 +80,50 @@ class _AddScreenState extends State<AddScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              postProvider.imageUrl == null
-                  ? Padding(
-                      padding: const EdgeInsets.all(80.0),
-                      child: Image.asset("assets/logo.png"),
-                    )
-                  : Image.network(postProvider.imageUrl),
-              Container(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  icon: Icon(Icons.camera_alt),
-                  onPressed: () => uploadImage(postProvider),
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
                 child: Column(
                   children: [
+                    postProvider.imageUrl == null
+                        ? SizedBox(
+                            height: 100,
+                          )
+                        : Image.network(postProvider.imageUrl),
+                    Row(
+                      children: [
+                        Text(
+                          "Category : ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        DropdownButton<String>(
+                          value: postProvider.category,
+                          icon: Icon(Icons.arrow_drop_down),
+                          iconSize: 24,
+                          elevation: 16,
+                          underline: Container(
+                            height: 3,
+                          ),
+                          onChanged: (String newValue) {
+                            print(newValue);
+                            postProvider.changeCategory = newValue;
+                          },
+                          items: <String>['도움요청', '기도요청', '구인구직']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                    // Divider(color: Colors.black,),
                     TextField(
                       decoration: InputDecoration(
                         hintText: 'Title',
@@ -130,7 +148,33 @@ class _AddScreenState extends State<AddScreen> {
                           postProvider.changeContent = value,
                       controller: contentController,
                     ),
+
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        icon: Icon(Icons.camera_alt),
+                        onPressed: () => uploadImage(postProvider),
+                      ),
+                    ),
                   ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(10)),
+                child: FlatButton(
+                  child: Text('Save', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    if(!auth.currentUser.isAnonymous) {
+                      postProvider.changeUserName =
+                          auth.currentUser.displayName;
+                      postProvider.changeUserImgUrl = auth.currentUser.photoURL;
+                    }
+                    postProvider.changeUserUid = auth.currentUser.uid;
+                    postProvider.savePost();
+                    Navigator.of(context).pop();
+                  },
                 ),
               ),
             ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PeopleListViewChannel extends StatelessWidget {
+class PeopleListViewCountry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -20,60 +20,75 @@ class Entry {
 // The entire multilevel list displayed by this app.
 final List<Entry> data = <Entry>[
   Entry(
-    'Ted Ed',
+    '미국',
     <Entry>[
-      Entry('English'),
-      Entry('French'),
-      Entry('Korean'),
+      Entry('대학원생'),
+      Entry('직장인'),
+      Entry('선교사'),
+      Entry('기타'),
     ],
   ),
   Entry(
-    'Coursera',
+    '유럽',
     <Entry>[
-      Entry('Chemistry'),
-      Entry('Physics'),
-      Entry('Biology'),
-      Entry('Earth science'),
+      Entry('대학원생'),
+      Entry('직장인'),
+      Entry('선교사'),
+      Entry('기타'),
     ],
   ),
   Entry(
-    'Khan Academy',
+    '중국',
     <Entry>[
-      Entry('Section C0'),
-      Entry('Section C1'),
-      Entry('Section C2'),
+      Entry('대학원생'),
+      Entry('직장인'),
+      Entry('선교사'),
+      Entry('기타'),
     ],
   ),
   Entry(
-    'Udemy',
+    '일본',
     <Entry>[
-      Entry('Section C0'),
-      Entry('Section C1'),
-      Entry('Section C2'),
+      Entry('대학원생'),
+      Entry('직장인'),
+      Entry('선교사'),
+      Entry('기타'),
     ],
   ),
   Entry(
-    'GCF',
+    '동남아시아',
     <Entry>[
-      Entry('Section C0'),
-      Entry('Section C1'),
-      Entry('Section C2'),
+      Entry('대학원생'),
+      Entry('직장인'),
+      Entry('선교사'),
+      Entry('기타'),
     ],
   ),
   Entry(
-    'Alsion',
+    '중동',
     <Entry>[
-      Entry('Section C0'),
-      Entry('Section C1'),
-      Entry('Section C2'),
+      Entry('대학원생'),
+      Entry('직장인'),
+      Entry('선교사'),
+      Entry('기타'),
     ],
   ),
   Entry(
-    'Mega Study',
+    '북부 아프리카',
     <Entry>[
-      Entry('Section C0'),
-      Entry('Section C1'),
-      Entry('Section C2'),
+      Entry('대학원생'),
+      Entry('직장인'),
+      Entry('선교사'),
+      Entry('기타'),
+    ],
+  ),
+  Entry(
+    '남부 아프리카',
+    <Entry>[
+      Entry('대학원생'),
+      Entry('직장인'),
+      Entry('선교사'),
+      Entry('기타'),
     ],
   ),
 ];

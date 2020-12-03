@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Post {
+  final String category;
   final String postId;
   final String userName;
+  final String userImageUrl;
   final String date;
   final String modifyDate;
   final String title;
@@ -13,9 +15,11 @@ class Post {
   final String userUid;
 
   Post({
+    this.category,
     @required this.postId,
     this.userName,
     this.date,
+    this.userImageUrl,
     this.modifyDate,
     this.title,
     this.content,
@@ -27,8 +31,10 @@ class Post {
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
+      category: json['category'],
       postId: json['postId'],
       userName: json['userName'],
+      userImageUrl: json['userImageUrl'],
       title: json['title'],
       content: json['content'],
       date: json['date'],
@@ -42,8 +48,10 @@ class Post {
 
   Map<String, dynamic> toMap() {
     return {
+      'category': category,
       'postId': postId,
       'userName': userName,
+      'userImageUrl': userImageUrl,
       'date': date,
       'modifyDate': modifyDate,
       'title': title,

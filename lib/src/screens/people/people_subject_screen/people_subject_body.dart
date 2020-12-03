@@ -16,7 +16,7 @@ class PeopleSubjectBody extends StatelessWidget {
             height: 20,
           ),
           Text(
-            "전공별 연락처",
+            "전공 목록",
             textAlign: TextAlign.start,
             style: TextStyle(
               fontWeight: FontWeight.bold,
