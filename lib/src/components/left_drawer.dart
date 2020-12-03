@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../colors.dart';
+import 'left_bar_radio.dart';
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -37,11 +38,7 @@ class NavDrawer extends StatelessWidget {
             title: Text('Welcome'),
             onTap: () => {},
           ),
-          ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
+          RadioWidget(),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),

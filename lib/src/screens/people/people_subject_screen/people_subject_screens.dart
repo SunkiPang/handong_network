@@ -11,7 +11,7 @@ class PeopleSubjectScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "과목 페이지",
+          "전공별 연락처",
           style: TextStyle(
             color: Colors.black,
           ),

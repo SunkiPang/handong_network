@@ -2,9 +2,9 @@ import 'package:Shrine/src/screens/search/search_bar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'people_list_view_channel.dart';
+import 'people_list_view_country.dart';
 
-class PeopleChannelBody extends StatelessWidget {
+class PeopleCountryBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -12,12 +12,11 @@ class PeopleChannelBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SearchBarWidget(),
           SizedBox(
             height: 20,
           ),
           Text(
-            "채널 목록",
+            "국가 목록",
             textAlign: TextAlign.start,
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -28,7 +27,7 @@ class PeopleChannelBody extends StatelessWidget {
             height: 10,
           ),
           Expanded(
-            child: PeopleListViewChannel(),
+            child: PeopleListViewCountry(),
           ),
         ],
       ),
