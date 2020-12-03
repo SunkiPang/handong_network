@@ -1,4 +1,5 @@
 import 'package:Shrine/colors.dart';
+import 'package:Shrine/src/screens/chat_screen.dart';
 import 'package:Shrine/src/screens/people/main/people_main_screen.dart';
 import 'package:Shrine/src/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -39,12 +40,14 @@ class BottomBar extends StatelessWidget {
                 ),
                 color: Colors.white,
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) {
-                  //     return SearchMainScreen();
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ChatScreen();
+                      },
+                    ),
+                  );
                 },
               ),
             ),

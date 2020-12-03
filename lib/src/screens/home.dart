@@ -121,7 +121,8 @@ class _HomeState extends State<Home> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            formatDate(DateTime.parse(data.date), [HH, ':', mm]),
+                            formatDate(
+                                DateTime.parse(data.date), [HH, ':', mm]),
                             style: TextStyle(
                               color: Colors.grey,
                               // fontSize: 15,
@@ -180,7 +181,8 @@ class _HomeState extends State<Home> {
               //   ),
               // ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
                 child: Text(data.content),
               ),
               (data.imageUrl != null)

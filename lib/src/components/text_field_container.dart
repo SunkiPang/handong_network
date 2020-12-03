@@ -2,7 +2,6 @@ import 'package:Shrine/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-
 class TextFieldContainer extends StatelessWidget {
   final Widget child;
   final num percentOfWidth;
@@ -44,7 +43,6 @@ class TextFieldContainer extends StatelessWidget {
   }
 }
 
-
 class DoubleRoundTextField extends StatelessWidget {
   final String text1;
   final String text2;
@@ -54,7 +52,9 @@ class DoubleRoundTextField extends StatelessWidget {
   const DoubleRoundTextField({
     Key key,
     this.text1,
-    this.text2, this.height1 = 10.0, this.height2 = 10.0,
+    this.text2,
+    this.height1 = 10.0,
+    this.height2 = 10.0,
   }) : super(key: key);
 
   @override
