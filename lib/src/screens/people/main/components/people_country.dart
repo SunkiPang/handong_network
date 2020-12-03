@@ -1,6 +1,6 @@
 import 'package:Shrine/src/components/header_more_widget.dart';
 import 'package:Shrine/src/components/text_field_container.dart';
-import 'package:Shrine/src/screens/people/job_screen/people_channel_screen.dart';
+import 'package:Shrine/src/screens/people/job_screen/people_country_screen.dart';
 import 'package:Shrine/src/screens/people/people_subject_screen/people_subject_screens.dart';
 import 'package:flutter/material.dart';
 

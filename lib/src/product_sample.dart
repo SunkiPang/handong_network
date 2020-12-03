@@ -1,5 +1,4 @@
 import 'package:Shrine/src/providers/post_provider.dart';
-import 'package:Shrine/src/providers/product_provider.dart';
 import 'package:Shrine/src/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

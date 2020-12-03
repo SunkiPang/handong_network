@@ -2,7 +2,7 @@ import 'package:Shrine/src/components/bottom_bar.dart';
 import 'package:Shrine/src/components/bottom_home_botton.dart';
 import 'package:flutter/material.dart';
 
-import 'people_channel_body.dart';
+import 'people_country_body.dart';
 
 class PeopleChannelScreen extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class PeopleChannelScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "채널 페이지",
+          "국가별 연락처",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -21,7 +21,7 @@ class PeopleChannelScreen extends StatelessWidget {
           color: Colors.black,
         ),
       ),
-      body: PeopleChannelBody(),
+      body: PeopleCountryBody(),
       floatingActionButton: BottomHomeButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomBar(),
