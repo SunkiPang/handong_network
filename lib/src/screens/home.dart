@@ -142,6 +142,7 @@ class _HomeState extends State<Home> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                           Text(
+
                             formatDate(DateTime.parse(data.date),
                                 [mm, '/', dd, '  ', HH, ':', mm]),
                             style: TextStyle(
