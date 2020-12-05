@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import 'package:Shrine/signup_screen.dart';
-import 'package:Shrine/src/product_sample.dart';
 import 'package:Shrine/src/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -106,7 +105,7 @@ class _AnonymouslySignInSectionState extends State<_AnonymouslySignInSection> {
               _signInAnonymously();
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ProductSample(),
+                  builder: (context) => Home(),
                 ),
               );
             },
@@ -173,7 +172,7 @@ class _OtherProvidersSignInSectionState
               _signInWithGoogle();
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ProductSample(),
+                  builder: (context) => Home(),
                 ),
               );
             },
