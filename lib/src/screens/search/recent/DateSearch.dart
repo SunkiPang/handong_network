@@ -21,17 +21,26 @@ class DataSearch extends SearchDelegate<String> {
     "HGU",
     "Test",
     "Good Tree International School",
+    "선교",
+    "학부생",
+    "학번",
+    "도와주세요",
+    "기도",
+    "한동",
+    "선교사",
   ];
 
   final recent = [
-    "HGU",
-    "Africa",
-    "USA",
-    "Good Tree International School",
-    "상담심리사회복지학부",
-    "미국",
+    "아프리카",
+    "선교",
+    "학부생",
+    "학번",
+    "도와주세요",
+    "기도",
+    "한동",
     "캄보디아",
     "선교사",
+    "마다가스카르",
   ];
 
   @override
