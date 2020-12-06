@@ -13,12 +13,27 @@ import 'package:provider/provider.dart';
 import 'detail_screen.dart';
 import 'search/recent/DateSearch.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   @override
-  _HomeState createState() => _HomeState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => PostProvider(),
+      child: MaterialApp(
+          home: HomeBody(),
+          theme: ThemeData(
+            // accentColor: Colors.pinkAccent,
+            primaryColor: Color(0xFF01579c),
+          )),
+    );
+  }
 }
 
-class _HomeState extends State<Home> {
+class HomeBody extends StatefulWidget {
+  @override
+  _HomeBodyState createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
   // String dropdownValue = 'ASC';
 
   @override
@@ -42,9 +57,27 @@ class _HomeState extends State<Home> {
           ],
           bottom: TabBar(
             tabs: [
-              Text("도움요청"),
-              Text("기도요청"),
-              Text("구인구직"),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  "도움요청",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              Text(
+                "기도요청",
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              Text(
+                "구인구직",
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
             ],
           ),
         ),
@@ -59,23 +92,59 @@ class _HomeState extends State<Home> {
                 Expanded(
                   child: StreamBuilder<List<Post>>(
                     stream: postProvider.posts,
-                    // (dropdownValue == 'ASC')
-                    // ? postProvider.postsASC
-                    // : postProvider.postsDESC,
                     builder: (context, snapshot) {
+                      Iterable<Post> filter = snapshot.data
+                          .where((post) => post.category.contains("도움요청"));
                       if (!snapshot.hasData)
                         return (CircularProgressIndicator());
                       else
                         return ListView(
-                          children: _buildGridCards(context, snapshot),
+                          children: buildGridCards(context, filter),
                         );
                     },
                   ),
                 ),
               ],
             ),
-            Icon(Icons.directions_transit),
-            Icon(Icons.directions_bike),
+            Column(
+              children: [
+                Expanded(
+                  child: StreamBuilder<List<Post>>(
+                    stream: postProvider.posts,
+                    builder: (context, snapshot) {
+                      Iterable<Post> filter = snapshot.data
+                          .where((post) => post.category.contains("기도요청"));
+                      if (!snapshot.hasData)
+                        return (CircularProgressIndicator());
+                      else
+                        return ListView(
+                          children: buildGridCards(context, filter),
+                        );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Expanded(
+                  child: StreamBuilder<List<Post>>(
+                    stream: postProvider.posts,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData)
+                        return Center(child: (CircularProgressIndicator()));
+                      else {
+                        Iterable<Post> filter = snapshot.data
+                            .where((post) => post.category.contains("구인구직"));
+                        return ListView(
+                          children: buildGridCards(context, filter),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -103,11 +172,13 @@ class _HomeState extends State<Home> {
     );
   }
 
-  List<Card> _buildGridCards(BuildContext context, snapshot) {
+  List<Card> buildGridCards(BuildContext context, filter) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final postProvider = Provider.of<PostProvider>(context, listen: false);
-    return snapshot.data.map<Card>((data) {
-      var index = snapshot.data.indexOf(data);
+    // if (category == snapshot.category)
+    // Iterable<Post> filter = snapshot.data.where((post) => post.category.contains(category));
+    return filter.map<Card>((data) {
+      // var index = filter.indexOf(data);
       return Card(
         clipBehavior: Clip.antiAlias,
         child: Padding(

@@ -12,13 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:Shrine/src/product_sample.dart';
+import 'package:Shrine/signup_screen.dart';
 import 'package:Shrine/src/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'colors.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -41,10 +43,30 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/hgu_logo.png',width: size.width * 0.5,),
+            Image.asset(
+              'assets/hgu_logo.png',
+              width: size.width * 0.5,
+            ),
             SizedBox(height: size.height * 0.1),
             _OtherProvidersSignInSection(),
             _AnonymouslySignInSection(),
+            FlatButton(
+              onPressed: () async {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SignupScreen(),
+                  ),
+                );
+              },
+              color: kPrimaryColor,
+              child: Text(
+                '회원가입',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -83,7 +105,7 @@ class _AnonymouslySignInSectionState extends State<_AnonymouslySignInSection> {
               _signInAnonymously();
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ProductSample(),
+                  builder: (context) => Home(),
                 ),
               );
             },
@@ -150,7 +172,7 @@ class _OtherProvidersSignInSectionState
               _signInWithGoogle();
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ProductSample(),
+                  builder: (context) => Home(),
                 ),
               );
             },
