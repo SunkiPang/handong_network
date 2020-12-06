@@ -69,7 +69,6 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-
     void _showDialog(String text) {
       showDialog(
         context: context,
@@ -124,13 +123,15 @@ class DataSearch extends SearchDelegate<String> {
                           children: [
                             data.userName == null
                                 ? Text(
-                              "User Name",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )
+                                    "User Name",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
                                 : Text(
-                              data.userName,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                                    data.userName,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                             Text(
                               formatDate(DateTime.parse(data.date),
                                   [mm, '/', dd, '  ', HH, ':', mm]),
@@ -182,8 +183,8 @@ class DataSearch extends SearchDelegate<String> {
                   ],
                 ),
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 20),
                   child: Text(data.content),
                 ),
                 (data.imageUrl != null)
@@ -199,19 +200,20 @@ class DataSearch extends SearchDelegate<String> {
     final postProvider = Provider.of<PostProvider>(context);
     // throw UnimplementedError();
     return Column(
-    children: [
+      children: [
         Expanded(
           child: StreamBuilder<List<Post>>(
             stream: postProvider.posts,
             builder: (context, snapshot) {
-              Iterable<Post> filter = snapshot.data
-                  .where((post) => post.content.contains(query));
               if (!snapshot.hasData)
                 return (CircularProgressIndicator());
-              else
+              else {
+                Iterable<Post> filter =
+                    snapshot.data.where((post) => post.content.contains(query));
                 return ListView(
                   children: buildGridCards(context, filter),
                 );
+              }
             },
           ),
         ),
@@ -219,8 +221,6 @@ class DataSearch extends SearchDelegate<String> {
     );
     // );
   }
-
-
 
   @override
   Widget buildSuggestions(BuildContext context) {
