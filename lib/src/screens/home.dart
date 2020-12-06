@@ -57,10 +57,13 @@ class _HomeBodyState extends State<HomeBody> {
           ],
           bottom: TabBar(
             tabs: [
-              Text(
-                "도움요청",
-                style: TextStyle(
-                  fontSize: 18,
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  "도움요청",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
                 ),
               ),
               Text(
