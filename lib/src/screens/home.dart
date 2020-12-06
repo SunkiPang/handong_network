@@ -93,14 +93,17 @@ class _HomeBodyState extends State<HomeBody> {
                   child: StreamBuilder<List<Post>>(
                     stream: postProvider.posts,
                     builder: (context, snapshot) {
-                      Iterable<Post> filter = snapshot.data
-                          .where((post) => post.category.contains("도움요청"));
+
                       if (!snapshot.hasData)
                         return (CircularProgressIndicator());
-                      else
+                      else{
+                        Iterable<Post> filter = snapshot.data
+                            .where((post) => post.category.contains("도움요청"));
                         return ListView(
                           children: buildGridCards(context, filter),
                         );
+                      }
+
                     },
                   ),
                 ),
@@ -112,14 +115,17 @@ class _HomeBodyState extends State<HomeBody> {
                   child: StreamBuilder<List<Post>>(
                     stream: postProvider.posts,
                     builder: (context, snapshot) {
-                      Iterable<Post> filter = snapshot.data
-                          .where((post) => post.category.contains("기도요청"));
+
                       if (!snapshot.hasData)
                         return (CircularProgressIndicator());
-                      else
+                      else{
+                        Iterable<Post> filter = snapshot.data
+                            .where((post) => post.category.contains("기도요청"));
                         return ListView(
                           children: buildGridCards(context, filter),
                         );
+                      }
+
                     },
                   ),
                 ),
