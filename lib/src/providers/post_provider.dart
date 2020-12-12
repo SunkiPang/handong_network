@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:core';
 
-enum Category { helps, prayers, jobs, }
+enum Category {
+  helps,
+  prayers,
+  jobs,
+}
 
 class PostProvider with ChangeNotifier {
   final postFireStore = PostFireStore();
@@ -49,7 +53,7 @@ class PostProvider with ChangeNotifier {
 
   Stream<List<Post>> get posts => postFireStore.getPosts();
   Stream<List<Post>> get postsASC => postFireStore.getPostsASC();
-  // Stream<List<Post>> get postsDESC => postFireStore.getPostsDESC();
+  Stream<List<Post>> get postsDESC => postFireStore.getPostsDESC();
 
   //Setters
   set changeCategory(String category) {
@@ -76,6 +80,7 @@ class PostProvider with ChangeNotifier {
     _modifyDate = modifyDate;
     notifyListeners();
   }
+
   set changeTitle(String title) {
     _title = title;
     notifyListeners();

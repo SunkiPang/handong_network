@@ -20,14 +20,14 @@ class PostFireStore {
             snapshot.docs.map((doc) => Post.fromJson(doc.data())).toList());
   }
   //
-  // Stream<List<Post>> getPostsDESC() {
-  //   return _db
-  //       .collection('posts')
-  //       .orderBy('price', descending: true)
-  //       .snapshots()
-  //       .map((snapshot) =>
-  //           snapshot.docs.map((doc) => Post.fromJson(doc.data())).toList());
-  // }
+  Stream<List<Post>> getPostsDESC() {
+    return _db
+        .collection('posts')
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Post.fromJson(doc.data())).toList());
+  }
 
 
   //Upsert
