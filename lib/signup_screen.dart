@@ -187,6 +187,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               await _auth.createUserWithEmailAndPassword(
                                   email: _email, password: _password);
                           if (newUser != null) {
+                            await _auth.currentUser
+                                .updateProfile(displayName: _name);
                             await _firestore
                                 .collection('users')
                                 .doc(newUser.user.uid)
