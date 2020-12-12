@@ -16,6 +16,8 @@ import 'package:Shrine/signup_screen.dart';
 import 'package:Shrine/src/components/rounded_button.dart';
 import 'package:Shrine/src/screens/home.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
