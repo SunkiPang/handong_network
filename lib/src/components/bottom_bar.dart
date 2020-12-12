@@ -1,13 +1,16 @@
 import 'package:Shrine/colors.dart';
 import 'package:Shrine/src/screens/chat_screen.dart';
+import 'package:Shrine/src/screens/chatlist.dart';
 import 'package:Shrine/src/screens/people/main/people_main_screen.dart';
 import 'package:Shrine/src/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BottomBar extends StatelessWidget {
+  final _auth = FirebaseAuth.instance;
   final ValueChanged<String> onChanged;
 
-  const BottomBar({
+  BottomBar({
     Key key,
     this.onChanged,
   }) : super(key: key);
@@ -44,7 +47,7 @@ class BottomBar extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return ChatScreen();
+                        return ChatList(_auth.currentUser.uid);
                       },
                     ),
                   );

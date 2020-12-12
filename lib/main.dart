@@ -16,24 +16,30 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:Shrine/colors.dart';
+import 'package:Shrine/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'login.dart';
 
 Future<void> main() async {
- WidgetsFlutterBinding.ensureInitialized();
- await Firebase.initializeApp();
- runApp(App());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Handong Network',
-      home: LoginPage(),
+      home: WelcomePage(),
+      theme: ThemeData(
+        fontFamily: 'Nanum Square Round',
+        primaryColor: kPrimaryColor,
+      ),
     );
   }
 }

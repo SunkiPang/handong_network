@@ -114,10 +114,15 @@ class GoogleUser extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              auth.currentUser.photoURL,
-              height: size.height * 0.4,
-            ),
+            auth.currentUser.photoURL != null
+                ? Image.network(
+                    auth.currentUser.photoURL,
+                    height: size.height * 0.4,
+                  )
+                : Image.asset(
+                    "assets/logo.png",
+                    height: size.height * 0.4,
+                  ),
             Text(
               auth.currentUser.uid,
               style: TextStyle(color: Colors.white),

@@ -1,6 +1,9 @@
 name: Shrine
 description: Learn how to use Material for structure and layout.
 
+environment:
+  sdk: ">=2.8.0 <3.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
@@ -19,8 +22,8 @@ dependencies:
   google_fonts: ^1.1.0
   image_picker: ^0.6.7+14
   permission_handler: ^5.0.1+1
-
-
+  modal_progress_hud: ^0.1.3
+  animated_text_kit: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -71,3 +74,19 @@ flutter:
     - packages/shrine_images/35-0.jpg
     - packages/shrine_images/36-0.jpg
     - packages/shrine_images/37-0.jpg
+
+  fonts:
+  - family: Pacifico
+    fonts:
+    - asset: fonts/Pacifico-Regular.ttf
+
+  - family: Source Sans Pro
+    fonts:
+    - asset: fonts/SourceSansPro-Regular.ttf
+
+  - family: Nanum Square Round
+    fonts:
+    - asset: fonts/NanumSquareRoundR.ttf
+    - asset: fonts/NanumSquareRoundB.ttf
+    - asset: fonts/NanumSquareRoundEB.ttf
+    - asset: fonts/NanumSquareRoundL.ttf

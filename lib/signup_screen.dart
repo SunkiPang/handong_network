@@ -12,16 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:Shrine/src/components/rounded_button.dart';
 import 'package:Shrine/src/screens/home.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'colors.dart';
-
-final _auth = FirebaseAuth.instance;
-final _firestore = FirebaseFirestore.instance;
+import 'colors.dart';
 
 class SignupScreen extends StatefulWidget {
   final String title = 'Sign In & Out';
@@ -31,10 +32,13 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _passwordCheckController = TextEditingController();
-  final _nameController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
+  bool showSpinner = false;
+  String _email;
+  String _password;
+  String _passwordCheck;
+  String _name;
   String _departmentValue = '국제어문학부';
   String _classValue = '95';
 
@@ -43,142 +47,173 @@ class _SignupScreenState extends State<SignupScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 70,
-                  ),
-                  Text('이메일'),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "myname@handong.edu",
+        child: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 36.0,
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _emailController,
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text('비밀번호'),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: "",
-                    ),
-                    keyboardType: TextInputType.visiblePassword,
-                    controller: _passwordController,
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text('비밀번호 확인'),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: "",
-                    ),
-                    keyboardType: TextInputType.visiblePassword,
-                    controller: _passwordCheckController,
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text('이름'),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "김한동",
-                    ),
-                    keyboardType: TextInputType.name,
-                    controller: _nameController,
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text('학번'),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4.0),
-                    child: DropdownButton<String>(
-                      elevation: 0,
-                      value: _classValue,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          _classValue = newValue;
-                        });
-                      },
-                      items: List<String>.generate(
-                              26,
-                              (int i) => (i + 95) < 100
-                                  ? (i + 95).toString()
-                                  : (i + 95 - 100).toString().padLeft(2, '0'))
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text('학부'),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4.0),
-                    child: DropdownButton<String>(
-                      elevation: 0,
-                      value: _departmentValue,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          _departmentValue = newValue;
-                        });
-                      },
-                      items: <String>[
-                        '글로벌리더십학부',
-                        '국제어문학부',
-                        '경영경제학부',
-                        '법학부',
-                        '커뮤니케이션학부',
-                        '공간환경시스템공학부',
-                        '기계제어공학부',
-                        '콘텐츠융합디자인학부',
-                        '생명과학부',
-                        '전산전자공학부',
-                        '상담심리사회복지학부',
-                        'ICT창업학부'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: FlatButton(
-                      child: Text(
-                        "회원가입",
-                        style: TextStyle(color: Colors.white),
+                    Text('이메일'),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: "id@handong.edu",
                       ),
-                      color: kPrimaryColor,
-                      onPressed: () {
-                        // _firestore.collection('users').add(
-
-                        // ),
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Home()));
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (value) {
+                        _email = value;
                       },
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text('비밀번호'),
+                    TextField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: "",
+                      ),
+                      keyboardType: TextInputType.visiblePassword,
+                      onChanged: (value) {
+                        _password = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text('비밀번호 확인'),
+                    TextField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: "",
+                      ),
+                      keyboardType: TextInputType.visiblePassword,
+                      onChanged: (value) {
+                        _passwordCheck = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text('이름'),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: "김한동",
+                      ),
+                      keyboardType: TextInputType.name,
+                      onChanged: (value) {
+                        _name = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text('학번'),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 4.0),
+                      child: DropdownButton<String>(
+                        elevation: 0,
+                        value: _classValue,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            _classValue = newValue;
+                          });
+                        },
+                        items: List<String>.generate(
+                                26,
+                                (int i) => (i + 95) < 100
+                                    ? (i + 95).toString()
+                                    : (i + 95 - 100).toString().padLeft(2, '0'))
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text('학부'),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 4.0),
+                      child: DropdownButton<String>(
+                        elevation: 0,
+                        value: _departmentValue,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            _departmentValue = newValue;
+                          });
+                        },
+                        items: <String>[
+                          '글로벌리더십학부',
+                          '국제어문학부',
+                          '경영경제학부',
+                          '법학부',
+                          '커뮤니케이션학부',
+                          '공간환경시스템공학부',
+                          '기계제어공학부',
+                          '콘텐츠융합디자인학부',
+                          '생명과학부',
+                          '전산전자공학부',
+                          '상담심리사회복지학부',
+                          'ICT창업학부'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    RoundedButton(
+                      title: '회원가입',
+                      color: kPrimaryColor,
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          final newUser =
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: _email, password: _password);
+                          if (newUser != null) {
+                            await _firestore
+                                .collection('users')
+                                .doc(newUser.user.uid)
+                                .set({
+                              'uid': newUser.user.uid,
+                              'email': _email,
+                              'password': _password,
+                              'name': _name,
+                              'department': _departmentValue,
+                              'classOf': _classValue,
+                            });
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => Home(),
+                              ),
+                            );
+                          }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

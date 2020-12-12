@@ -1,130 +1,77 @@
-// Copyright 2018-present the Flutter authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import 'package:Shrine/signup_screen.dart';
 import 'package:Shrine/src/components/rounded_button.dart';
 import 'package:Shrine/src/screens/home.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 import 'colors.dart';
+import 'login.dart';
+import 'signup_screen.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class LoginPage extends StatefulWidget {
+class WelcomePage extends StatefulWidget {
   final String title = 'Sign In & Out';
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _WelcomePageState createState() => _WelcomePageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  bool showSpinner = false;
-  final _auth = FirebaseAuth.instance;
-  String email;
-  String password;
-
+class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
-        child: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(24.0, 120.0, 24.0, 0.0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  TyperAnimatedTextKit(
-                    speed: Duration(milliseconds: 120),
-                    pause: Duration(milliseconds: 4000),
-                    text: ['Handong People'],
-                    textAlign: TextAlign.center,
-                    textStyle: TextStyle(
-                      fontFamily: 'Pacifico',
-                      fontSize: 48.0,
-                      color: kPrimaryDarkColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 36.0,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    textAlign: TextAlign.left,
-                    onChanged: (value) {
-                      email = value;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: '이메일 아이디',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  TextField(
-                    obscureText: true,
-                    textAlign: TextAlign.left,
-                    onChanged: (value) {
-                      password = value;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: '비밀번호',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  RoundedButton(
-                    title: '로그인',
-                    color: kPrimaryColor,
-                    onPressed: () async {
-                      setState(() {
-                        showSpinner = true;
-                      });
-                      try {
-                        final user = await _auth.signInWithEmailAndPassword(
-                            email: email, password: password);
-                        if (user != null) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => Home(),
-                            ),
-                          );
-                        }
-                        setState(() {
-                          showSpinner = false;
-                        });
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
-                  ),
-                ],
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              TyperAnimatedTextKit(
+                speed: Duration(milliseconds: 120),
+                pause: Duration(milliseconds: 4000),
+                text: ['Handong People'],
+                textAlign: TextAlign.center,
+                textStyle: TextStyle(
+                  fontFamily: 'Pacifico',
+                  fontSize: 48.0,
+                  color: kPrimaryDarkColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
+              SizedBox(
+                height: 48.0,
+              ),
+              RoundedButton(
+                title: '로그인',
+                color: kPrimaryColor,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                  );
+                },
+              ),
+              RoundedButton(
+                title: '회원가입',
+                color: kPrimaryColor,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SignupScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
 

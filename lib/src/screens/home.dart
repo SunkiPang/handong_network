@@ -1,3 +1,4 @@
+import 'package:Shrine/colors.dart';
 import 'package:Shrine/src/components/bottom_bar.dart';
 import 'package:Shrine/src/components/bottom_home_botton.dart';
 import 'package:Shrine/src/components/left_drawer.dart';
@@ -19,11 +20,12 @@ class Home extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => PostProvider(),
       child: MaterialApp(
-          home: HomeBody(),
-          theme: ThemeData(
-            // accentColor: Colors.pinkAccent,
-            primaryColor: Color(0xFF01579c),
-          )),
+        home: HomeBody(),
+        theme: ThemeData(
+          fontFamily: 'Nanum Square Round',
+          primaryColor: kPrimaryColor,
+        ),
+      ),
     );
   }
 }
@@ -43,7 +45,16 @@ class _HomeBodyState extends State<HomeBody> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Main'),
+          backgroundColor: kPrimaryColor,
+          centerTitle: true,
+          title: Text(
+            'Handong People',
+            style: TextStyle(
+              fontFamily: 'Pacifico',
+              fontSize: 24.0,
+            ),
+          ),
+          automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(
               icon: Icon(
@@ -56,26 +67,30 @@ class _HomeBodyState extends State<HomeBody> {
             ),
           ],
           bottom: TabBar(
+            indicatorColor: Colors.white,
             tabs: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(
-                  "도움요청",
+                  "도움 요청",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               Text(
-                "기도요청",
+                "기도 요청",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 "구인구직",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
@@ -93,17 +108,15 @@ class _HomeBodyState extends State<HomeBody> {
                   child: StreamBuilder<List<Post>>(
                     stream: postProvider.posts,
                     builder: (context, snapshot) {
-
                       if (!snapshot.hasData)
                         return (CircularProgressIndicator());
-                      else{
+                      else {
                         Iterable<Post> filter = snapshot.data
                             .where((post) => post.category.contains("도움요청"));
                         return ListView(
                           children: buildGridCards(context, filter),
                         );
                       }
-
                     },
                   ),
                 ),
@@ -115,17 +128,15 @@ class _HomeBodyState extends State<HomeBody> {
                   child: StreamBuilder<List<Post>>(
                     stream: postProvider.posts,
                     builder: (context, snapshot) {
-
                       if (!snapshot.hasData)
                         return (CircularProgressIndicator());
-                      else{
+                      else {
                         Iterable<Post> filter = snapshot.data
                             .where((post) => post.category.contains("기도요청"));
                         return ListView(
                           children: buildGridCards(context, filter),
                         );
                       }
-
                     },
                   ),
                 ),
