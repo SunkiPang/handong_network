@@ -106,7 +106,7 @@ class _HomeBodyState extends State<HomeBody> {
               children: [
                 Expanded(
                   child: StreamBuilder<List<Post>>(
-                    stream: postProvider.posts,
+                    stream: postProvider.postsASC,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData)
                         return (CircularProgressIndicator());
@@ -126,7 +126,7 @@ class _HomeBodyState extends State<HomeBody> {
               children: [
                 Expanded(
                   child: StreamBuilder<List<Post>>(
-                    stream: postProvider.posts,
+                    stream: postProvider.postsASC,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData)
                         return (CircularProgressIndicator());
@@ -146,7 +146,7 @@ class _HomeBodyState extends State<HomeBody> {
               children: [
                 Expanded(
                   child: StreamBuilder<List<Post>>(
-                    stream: postProvider.posts,
+                    stream: postProvider.postsASC,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData)
                         return Center(child: (CircularProgressIndicator()));

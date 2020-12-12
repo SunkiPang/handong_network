@@ -48,8 +48,7 @@ class PostProvider with ChangeNotifier {
   String get userUid => _userUid;
 
   Stream<List<Post>> get posts => postFireStore.getPosts();
-
-  // Stream<List<Post>> get postsASC => postFireStore.getPostsASC();
+  Stream<List<Post>> get postsASC => postFireStore.getPostsASC();
   // Stream<List<Post>> get postsDESC => postFireStore.getPostsDESC();
 
   //Setters
